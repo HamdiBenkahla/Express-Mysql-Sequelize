@@ -9,6 +9,7 @@ This projetct is build in JavaScript for NodeJS and these main npm modules :
 -   [Sequelize](https://sequelize.org/)
 -   [Passport.js](http://www.passportjs.org/)
 -   [swagger](https://swagger.io/)
+-   [Mocha](https://swagger.io/](https://mochajs.org/))
 
 <!-- GETTING STARTED -->
 
