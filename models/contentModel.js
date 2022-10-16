@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         title: DataTypes.STRING,
         image: DataTypes.STRING,
         quote: DataTypes.STRING,
-        columnId: DataTypes.INTEGER,
+        //columnId: DataTypes.INTEGER,
     }, {
       sequelize,
       modelName: 'Content',

@@ -49,9 +49,6 @@ db.pages.hasMany(db.rows, {
     foreignKey: 'pageId'
 })
 
-db.pages.hasMany(db.images, {
-    foreignKey: 'page_id'
-})
 
 db.rows.belongsTo(db.pages, {
     foreignKey: 'pageId'
@@ -77,12 +74,12 @@ db.contents.hasOne(db.images, {
     foreignKey: 'contentId'
 })
 
-db.images.hasMany(db.images, {
+db.images.hasMany(db.contents, {
     foreignKey: 'contentId'
 })
 
-db.images.hasMany(db.pages, {
-    foreignKey: 'page_id'
-})
+db.images.belongsToMany(db.pages, { through: 'PageImage' })
+
+db.pages.belongsToMany(db.images, { through: 'PageImage' })
 
 module.exports = db;

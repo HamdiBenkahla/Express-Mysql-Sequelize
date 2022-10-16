@@ -5,7 +5,7 @@ const {
   module.exports = (sequelize, DataTypes) => {
     class Column extends Model {};
     Column.init({
-        rowId: DataTypes.INTEGER,
+        // rowId: DataTypes.INTEGER,
     }, {
       sequelize,
       modelName: 'Column',

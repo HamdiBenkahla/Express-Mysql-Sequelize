@@ -24,7 +24,7 @@ app.use(bodyparser.urlencoded({
 app.use('/auth', auth);
 app.use('/page', pages);
 app.use('/row', require('./routes/row.routes'))
-app.use('/colum', column)
+app.use('/column', column)
 app.use('/content', content);
 //create connection
 const PORT = process.env.PORT || 3000;

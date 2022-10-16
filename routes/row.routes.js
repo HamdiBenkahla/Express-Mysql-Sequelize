@@ -28,7 +28,7 @@ const {verifyAuth} =require('../middleware/auth');
  *          description: error:"error"
  */
 
- router.post('/create',verifyAuth,createRow);
+ router.post('/create',createRow);
 
 
 

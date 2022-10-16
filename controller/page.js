@@ -1,5 +1,5 @@
 
-const {pages}  = require('../db/db.js')
+const {pages,owner}  = require('../db/db.js')
 const { responseHandler } = require('../helpers/response-handler');
 
 
@@ -24,5 +24,15 @@ const createPage = async(req, res) => {
         }  
 }
 
+const getSinglePage = async(req, res) => {
+    try{
+        let {pageId, id = +pageId} = req.params;
+        let page = await pages.findOne({ where: { id }, include: [owner]  });
+        return responseHandler.makeResponseData(res, 200, 'success', page);
+        }catch(err){
+            return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
+        }  
+}
 
-module.exports = {getAllPages, createPage};
+
+module.exports = {getAllPages, createPage,getSinglePage};

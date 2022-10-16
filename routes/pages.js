@@ -1,15 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const {getAllPages,createPage} = require('../controller/page');
+const {getAllPages,createPage,getSinglePage} = require('../controller/page');
 
 /**
  * @swagger
- * /page/{id}:
+ * /page/{pageId}:
  *   get:
  *     tags:
  *     - "page"
  *     summary: get random captcha .
  *     description: return captcha to user to allow authentication action <br> without access_token
+ *     parameters:
+ *       - name: pageId
+ *         description: page id.
+ *         in: path 
  *     produces:
  *       - application/json
  *     responses:
@@ -18,9 +22,7 @@ const {getAllPages,createPage} = require('../controller/page');
  *       "500":
  *          description: code,<br>error:"error"
  */
- router.get('/:id', (req,res)=>{
-    res.send({mama:5656})
- })
+ router.get('/:id', getSinglePage)
 
 
  router.get('/',getAllPages)

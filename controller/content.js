@@ -1,7 +1,8 @@
-const {contents,images}  = require('../db/db.js')
+const {contents,images,pages}  = require('../db/db.js')
 const { responseHandler } = require('../helpers/response-handler');
 const multer = require('multer');
 const path = require('path');
+
 
 
 //! Use of Multer
@@ -28,7 +29,11 @@ const uploadImage = async (req, res) =>{
     try{
         let {page_id,contentId} = req.body;
         const path = handlePathImage(req?.file,res);
-        await images.create({page_id,contentId,path})
+        
+        
+      let created =  await images.create({page_id,contentId,path})
+        
+      created.addPages(page_id);
         return responseHandler.makeResponseData(res, 200, 'image uploaded');
     }catch(err){
         return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
@@ -49,4 +54,37 @@ const updateImage = async (req, res) =>{
 
 }
 
-module.exports = {uploadImage,upload,updateImage}
+const deleteImage = async(req, res) => {
+  try{
+   let {imageId, id = +imageId} = req.params;
+   let image = await images.findByPk(id);
+   //retriving all pages that contains the image
+   let pages = await image.getPages();
+   if(pages.length > 1) return responseHandler.makeResponseError(res, 401, 'image already in use');
+   await image.destroy(); // deletes the image
+   return responseHandler.makeResponseData(res, 200, 'image deleted');
+  }catch(err){
+    return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
+  }
+}
+
+
+const createContent = async(req, res) => {
+    try{
+        let {pageId,columnId,paragraph,title,quote} = req.body;
+        if(!pageId || !columnId) return responseHandler.makeResponseError(res, 500, {message : "missing parameters"});
+        let newContent =  {
+            pageId,
+            columnId,
+            ...paragraph && {paragraph},
+            ...title && {title},
+            ...quote && {quote},
+        };
+        let page = await contents.create(newContent);
+        return responseHandler.makeResponseData(res, 200, 'success', page);
+        }catch(err){
+            return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
+        }  
+}
+
+module.exports = {uploadImage,upload,updateImage,deleteImage,createContent}
