@@ -1,7 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {emailSignup,emailConnection} = require('../middleware/passeport.middleware')
-
+const {
+  emailSignup,
+  emailConnection,
+} = require("../middleware/passeport.middleware");
 
 /**
  * @swagger
@@ -29,10 +31,9 @@ const {emailSignup,emailConnection} = require('../middleware/passeport.middlewar
  *       "500":
  *          description: error=eror
  */
- router.post('/signup', emailSignup)
+router.post("/signup", emailSignup);
 
-
- /**
+/**
  * @swagger
  * /auth/signin:
  *   post:
@@ -58,6 +59,6 @@ const {emailSignup,emailConnection} = require('../middleware/passeport.middlewar
  *       "500":
  *          description: error=eror
  */
- router.post('/signin', emailConnection)
+router.post("/signin", emailConnection);
 
- module.exports = router
+module.exports = router;

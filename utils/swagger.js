@@ -1,37 +1,36 @@
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const {version} = require('../package.json')
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const { version } = require("../package.json");
 
 const options = {
-    definition: {
-      openapi: "3.0.0",
-      info: {
-        title: "REST API Docs",
-        version,
-        description : "Welcome to Foleon assessment endpoints",
-        customCss: '.swagger-ui .topbar { display: none }',
-      },
-      host: process.env.BASEURLLOCAL,
-      components: {
-        securitySchemas: {
-          bearerAuth: {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "JWT",
-          },
-        },
-      },
-      security: [
-        {
-            bearerAuth: [],
-        },
-    ],
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "REST API Docs",
+      version,
+      description: "Welcome to Foleon assessment endpoints",
+      customCss: ".swagger-ui .topbar { display: none }",
     },
-    apis: ['./routes/*.js'],
-  };
+    host: process.env.BASEURLLOCAL,
+    components: {
+      securitySchemas: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
 
-
-  const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(options);
 
 function swaggerDocs(app, port) {
   // Swagger page
@@ -42,7 +41,6 @@ function swaggerDocs(app, port) {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-
 }
 
 module.exports = swaggerDocs;
