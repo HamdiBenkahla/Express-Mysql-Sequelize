@@ -6,6 +6,8 @@ var cors = require('cors')
 const swaggerDocs = require('./utils/swagger')
 const pages = require('./routes/pages')
 const auth = require('./routes/auth.routes')
+const column = require('./routes/column.routes')
+
 require('dotenv').config()
 //use express static folder
 app.use(express.static("./public"))
@@ -20,9 +22,10 @@ app.use(bodyparser.urlencoded({
     extended: true
 }))
 
-app.use('/auth', auth)
-app.use('/page', pages)
-
+app.use('/auth', auth);
+app.use('/page', pages);
+app.use('/row', require('./routes/row.routes'))
+app.use('/colum', column)
 
 //create connection
 const PORT = process.env.PORT || 3000;

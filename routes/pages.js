@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getAllPages,createPage} = require('../controller/page')
+const {getAllPages,createPage} = require('../controller/page');
 
 /**
  * @swagger

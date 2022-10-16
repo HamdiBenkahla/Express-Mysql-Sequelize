@@ -29,6 +29,7 @@ db.sequelize = sequelize
  db.rows = require('../models/rows.js')(sequelize, DataTypes);
  db.owner = require('../models/pageOwner.js')(sequelize, DataTypes);
  db.columns = require('../models/columnMondel.js')(sequelize, DataTypes);
+ db.contents = require('../models/contentModel.js')(sequelize, DataTypes);
 
  db.sequelize.sync({ force: false })
 .then(() => {
@@ -57,6 +58,12 @@ db.rows.hasMany(db.columns, {
 
 db.columns.belongsTo(db.rows, {
     foreignKey: 'rowId'
+})
+db.columns.hasOne(db.contents, {
+    foreignKey: 'columnId'
+})
+db.contents.belongsTo(db.columns, {
+    foreignKey: 'columnId'
 })
 
 module.exports = db;
