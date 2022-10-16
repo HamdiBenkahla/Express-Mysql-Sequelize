@@ -1,13 +1,12 @@
 const express = require('express')
 const app = express()
 const bodyparser = require('body-parser')
-const db = require('./db/db')
 var cors = require('cors')
 const swaggerDocs = require('./utils/swagger')
 const pages = require('./routes/pages')
 const auth = require('./routes/auth.routes')
 const column = require('./routes/column.routes')
-
+const content = require('./routes/content.routes')
 require('dotenv').config()
 //use express static folder
 app.use(express.static("./public"))
@@ -26,7 +25,7 @@ app.use('/auth', auth);
 app.use('/page', pages);
 app.use('/row', require('./routes/row.routes'))
 app.use('/colum', column)
-
+app.use('/content', content);
 //create connection
 const PORT = process.env.PORT || 3000;
 

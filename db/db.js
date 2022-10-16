@@ -30,6 +30,7 @@ db.sequelize = sequelize
  db.owner = require('../models/pageOwner.js')(sequelize, DataTypes);
  db.columns = require('../models/columnMondel.js')(sequelize, DataTypes);
  db.contents = require('../models/contentModel.js')(sequelize, DataTypes);
+ db.images = require('../models/imageModel.js')(sequelize, DataTypes);
 
  db.sequelize.sync({ force: false })
 .then(() => {
@@ -48,6 +49,10 @@ db.pages.hasMany(db.rows, {
     foreignKey: 'pageId'
 })
 
+db.pages.hasMany(db.images, {
+    foreignKey: 'page_id'
+})
+
 db.rows.belongsTo(db.pages, {
     foreignKey: 'pageId'
 })
@@ -59,11 +64,25 @@ db.rows.hasMany(db.columns, {
 db.columns.belongsTo(db.rows, {
     foreignKey: 'rowId'
 })
+
 db.columns.hasOne(db.contents, {
     foreignKey: 'columnId'
 })
+
 db.contents.belongsTo(db.columns, {
     foreignKey: 'columnId'
+})
+
+db.contents.hasOne(db.images, {
+    foreignKey: 'contentId'
+})
+
+db.images.hasMany(db.images, {
+    foreignKey: 'contentId'
+})
+
+db.images.hasMany(db.pages, {
+    foreignKey: 'page_id'
 })
 
 module.exports = db;
