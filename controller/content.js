@@ -2,7 +2,7 @@ const { contents, images, pages } = require("../db/db.js");
 const { responseHandler } = require("../helpers/response-handler");
 const multer = require("multer");
 const path = require("path");
-
+const fs = require('fs');
 //! Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
@@ -84,8 +84,12 @@ const deleteImage = async (req, res) => {
     let belongsToPage = checkBelongsTo(pages, idPage);
     if (!belongsToPage)
       return responseHandler.makeResponseError(res, 401, "wrong manipulation");
-    await image.destroy(); // deletes the image
-    return responseHandler.makeResponseData(res, 200, "image deleted");
+    
+    await image.destroy(); // deletes the image from db
+    let fileName =image.path.split('/').pop()
+    let directoryPath = __basedir +"/public/images/";
+    fs.unlink(directoryPath + fileName,_ =>{}); //delete uploaded image from /public/images folder
+    responseHandler.makeResponseData(res, 200, "image deleted");
   } catch (err) {
     return responseHandler.makeResponseError(
       res,

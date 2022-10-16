@@ -10,6 +10,8 @@ const content = require("./routes/content.routes");
 require("dotenv").config();
 const path = require("path");
 
+
+global.__basedir = __dirname;
 //use express static folder
 app.use(express.static("public"));
 // app.use('/static', express.static(path.join(__dirname, '/public')))
