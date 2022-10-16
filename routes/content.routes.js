@@ -3,7 +3,74 @@ const router = express.Router();
 const {uploadImage,upload,updateImage,deleteImage,createContent,updateContent} = require('../controller/content');
 
 
+
+/**
+ * @swagger
+ * /content/upload:
+ *   post:
+ *     tags:
+ *     - "content"
+ *     summary: upload image.
+ *     description:  Upload page image <br> with access_token.
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:      # Request body contents
+ *             type: object
+ *             properties:
+ *               page_id:
+ *                 type: number
+ *               file:
+ *                 type: string
+ *                 format : base64
+ *               contentId:
+ *                 type: number
+ *     responses:
+ *       "200":
+ *          description: code,<br>message:"'image uploaded'"
+ *       "406":
+ *          description: code,<br>error:"No file upload"
+ *       "500":
+ *          description: error:error message
+ */
+
 router.post('/upload',upload,uploadImage);
+
+
+/**
+ * @swagger
+ * /content/upload/{imageId}:
+ *   post:
+ *     tags:
+ *     - "content"
+ *     summary: upload image.
+ *     description:  Upload page image <br> with access_token.
+ *     parameters:
+ *       - name: imageId
+ *         description: the id of image.
+ *         required: true
+ *         in: path
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:      # Request body contents
+ *             type: object
+ *             properties:
+ *               page_id:
+ *                 type: number
+ *               file:
+ *                 type: string
+ *                 format : base64
+ *               contentId:
+ *                 type: number
+ *     responses:
+ *       "200":
+ *          description: code,<br>message:"'image uploaded'"
+ *       "406":
+ *          description: code,<br>error:"No file upload"
+ *       "500":
+ *          description: error:error message
+ */
 
 router.put('/upload/:id',upload,updateImage);
 

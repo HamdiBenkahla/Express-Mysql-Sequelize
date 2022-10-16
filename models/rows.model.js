@@ -4,9 +4,7 @@ const {
 
   module.exports = (sequelize, DataTypes) => {
     class Row extends Model {};
-    Row.init({
-      // pageId: DataTypes.INTEGER,
-    }, {
+    Row.init({}, {
       sequelize,
       modelName: 'Row',
     });

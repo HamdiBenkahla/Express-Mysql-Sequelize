@@ -1,0 +1,15 @@
+<div *ngFor="let row of page.Rows">
+  <div *ngFor="let column of row.Columns">
+    <div>{{column?.Content?.title}}</div>
+    <div *ngIf="column?.Content?.Image">
+          <img class="images" [src]="column?.Content?.Image.path"/>
+          <button
+          type="submit"
+          (click)="deleteImage(page.id,column?.Content?.Image?.id)"
+        >
+          delete
+        </button>
+          
+    </div>
+  </div>
+</div>

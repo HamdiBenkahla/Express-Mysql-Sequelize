@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     Content.init({
         paragraph: DataTypes.STRING,
         title: DataTypes.STRING,
-        image: DataTypes.STRING,
         quote: DataTypes.STRING,
         //columnId: DataTypes.INTEGER,
     }, {

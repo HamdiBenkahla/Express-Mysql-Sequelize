@@ -1,5 +1,5 @@
 
-const {pages,owner,rows,columns,contents,images}  = require('../db/db.js')
+const {pages,rows,columns,contents,images}  = require('../db/db.js')
 const { responseHandler } = require('../helpers/response-handler');
 
 
@@ -40,9 +40,16 @@ const deletePage = async (req, res) => {
     try{
         let page = await pages.findByPk(id);
         if(!page) return responseHandler.makeResponseError(res, 404, 'page not found');
+        let images = await page.getImages();
+        let imagePromises = images.map(image => image.getPages());
+        //check if all images belongs to more than a pages and it belongs to the deleted page
+        let allPages =  (await Promise.all(imagePromises)).every(pagesArray => pagesArray.length === 1 && pagesArray[0]?.toJSON()?.PageImage?.pageId ===id);
+        if(!allPages) return responseHandler.makeResponseError(res, 401, 'image already in use');
+        await page.destroy();
+        return responseHandler.makeResponseData(res, 200, 'page deleted');
     }catch(err){
         return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
     }
 }
 
-module.exports = {getAllPages, createPage,getSinglePage};
+module.exports = {getAllPages, createPage,getSinglePage,deletePage};

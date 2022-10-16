@@ -1,13 +1,13 @@
 // const Sequelize = require('sequelize');
 const {Sequelize, DataTypes} = require('sequelize');
 
-const sequelize = new Sequelize('foleon', 'root', 'root', {
+const sequelize = new Sequelize(process.env.DBCONFIG, 'root', 'root', {
 
     host: 'localhost',
     dialect: 'mysql',
     logging: false,
     database: "foleon",
-    port: 3306
+    port: process.env.DBPORT
 });
 sequelize
     .authenticate()
@@ -25,12 +25,12 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
- db.pages = require('../models/pageSchema.js')(sequelize, DataTypes);
- db.rows = require('../models/rows.js')(sequelize, DataTypes);
+ db.pages = require('../models/page.model.js')(sequelize, DataTypes);
+ db.rows = require('../models/rows.model.js')(sequelize, DataTypes);
  db.owner = require('../models/pageOwner.js')(sequelize, DataTypes);
- db.columns = require('../models/columnMondel.js')(sequelize, DataTypes);
- db.contents = require('../models/contentModel.js')(sequelize, DataTypes);
- db.images = require('../models/imageModel.js')(sequelize, DataTypes);
+ db.columns = require('../models/column.model.js')(sequelize, DataTypes);
+ db.contents = require('../models/content.model.js')(sequelize, DataTypes);
+ db.images = require('../models/image.model.js')(sequelize, DataTypes);
 
  db.sequelize.sync({ force: false })
 .then(() => {
@@ -46,7 +46,8 @@ db.pages.belongsTo(db.owner, {
 })
 
 db.pages.hasMany(db.rows, {
-    foreignKey: 'pageId'
+    foreignKey: 'pageId',
+    onDelete: 'cascade'
 })
 
 
@@ -55,7 +56,8 @@ db.rows.belongsTo(db.pages, {
 })
 
 db.rows.hasMany(db.columns, {
-    foreignKey: 'rowId'
+    foreignKey: 'rowId',
+    onDelete: 'cascade'
 })
 
 db.columns.belongsTo(db.rows, {
