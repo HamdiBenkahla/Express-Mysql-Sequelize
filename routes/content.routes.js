@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {uploadImage,upload,updateImage,deleteImage,createContent} = require('../controller/content');
+const {uploadImage,upload,updateImage,deleteImage,createContent,updateContent} = require('../controller/content');
 
 
 router.post('/upload',upload,uploadImage);
@@ -70,5 +70,38 @@ router.delete('/image/:imageId',deleteImage);
  */
 router.post('/create', createContent)
 
+
+/**
+ * @swagger
+ * /content/update/{contentId}:
+ *   put:
+ *     tags:
+ *     - "content"
+ *     summary: update content of a page.
+ *     description: allow user to update content of a column
+ *     requestBody:
+ *        content:
+ *          application/json:
+ *            schema:      # Request body contents
+ *              type: object
+ *              properties:
+ *                title:
+ *                  type: string
+ *                paragraph:
+ *                  type: string
+ *                quote:
+ *                  type: string
+ *     parameters:
+ *       - name: contentId
+ *         description: the id of content.
+ *         required: true
+ *         in: path
+ *     responses:
+ *       "202":
+ *          description: update successfully, {"code":"status code","message":"success'}
+ *       "500":
+ *          description: error:<br> server error
+ */
+router.put('/update/:contentId', updateContent)
 
 module.exports = router

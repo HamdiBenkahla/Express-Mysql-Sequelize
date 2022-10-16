@@ -64,8 +64,10 @@ const deleteImage = async(req, res) => {
   try{
    let {imageId, id = +imageId,}= req.params;
    let {pageId , idPage = +pageId} = req.query;
+   //if missing parameter return error to user
+   if(!idPage || !id) return responseHandler.makeResponseError(res, 401, 'missing parameter');
    let image = await images.findByPk(id);
-   //retriving all pages that contains the image
+   //retrieving all pages that contains the image
    let pages = await image.getPages();
    if(pages.length > 1) return responseHandler.makeResponseError(res, 401, 'image already in use');
    let belongsToPage = checkBelongsTo(pages,idPage);
@@ -96,4 +98,15 @@ const createContent = async(req, res) => {
         }  
 }
 
-module.exports = {uploadImage,upload,updateImage,deleteImage,createContent}
+const updateContent = async(req, res) => {
+    try{
+      let {contentId, id = +contentId} = req.params;
+      const data = req.body;
+      await contents.update(data, {where :{id}});
+      return responseHandler.makeResponseData(res, 202, 'success');
+    }catch(err){
+        return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
+    }
+}
+
+module.exports = {uploadImage,upload,updateImage,deleteImage,createContent,updateContent}

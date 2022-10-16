@@ -24,6 +24,7 @@ const createPage = async(req, res) => {
         }  
 }
 
+//controller to fetch a single page by id
 const getSinglePage = async(req, res) => {
     try{
         let {pageId, id = +pageId} = req.params;
@@ -34,5 +35,14 @@ const getSinglePage = async(req, res) => {
         }  
 }
 
+const deletePage = async (req, res) => {
+    let {pageId, id = +pageId} = req.params;
+    try{
+        let page = await pages.findByPk(id);
+        if(!page) return responseHandler.makeResponseError(res, 404, 'page not found');
+    }catch(err){
+        return responseHandler.makeResponseError(res, 500, err.message ? err.message : err.error);
+    }
+}
 
 module.exports = {getAllPages, createPage,getSinglePage};
