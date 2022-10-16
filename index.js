@@ -8,8 +8,11 @@ const auth = require('./routes/auth.routes')
 const column = require('./routes/column.routes')
 const content = require('./routes/content.routes')
 require('dotenv').config()
+const path = require('path');
+
 //use express static folder
-app.use(express.static("./public"))
+app.use(express.static('public'));
+// app.use('/static', express.static(path.join(__dirname, '/public')))
 app.use(
     cors({
         methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],

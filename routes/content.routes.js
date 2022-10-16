@@ -7,6 +7,32 @@ router.post('/upload',upload,uploadImage);
 
 router.put('/upload/:id',upload,updateImage);
 
+
+/**
+ * @swagger
+ * /content/image/{imageId}:
+ *   delete:
+ *     tags:
+ *     - "content"
+ *     summary: remove an image from page.
+ *     description: allow user to delete an image from page
+ *     parameters:
+ *       - name: imageId
+ *         description: the id of image.
+ *         required: true
+ *         in: path
+ *       - name: pageId
+ *         description: the id of page.
+ *         required: true
+ *         in: query
+ *     responses:
+ *       "200":
+ *          description: deleted successfully, {"code":"status code","message":"image deleted'}
+ *       "401":
+ *          description: error:<br> image already in use<br>,
+ *       "500":
+ *          description: error:<br> server error
+ */
 router.delete('/image/:imageId',deleteImage);
 
 

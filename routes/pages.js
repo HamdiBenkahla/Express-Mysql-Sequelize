@@ -18,7 +18,7 @@ const {getAllPages,createPage,getSinglePage} = require('../controller/page');
  *       - application/json
  *     responses:
  *       "200":
- *          description: code,<br>message,<br>data:{_id,originalImage,puzzle,position}
+ *          description: code,<br>message,<br>data:{_id,owner_id,Rows,position,createdAt,updatedAt}
  *       "500":
  *          description: code,<br>error:"error"
  */

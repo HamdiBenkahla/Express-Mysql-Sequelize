@@ -8,7 +8,7 @@ const path = require('path');
 //! Use of Multer
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, './public/')     // './public/images/' directory name where save the file
+        callBack(null, './public//images/')     // './public/images/' directory name where save the file
     },
     filename: (req, file, callBack) => {
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -40,6 +40,12 @@ const uploadImage = async (req, res) =>{
     }
 }
 
+//check if image belong to page
+let checkBelongsTo = (pages,target) => 
+         pages?.map(elem => elem?.toJSON()?.PageImage?.PageId)
+               .includes(target)
+
+
 const updateImage = async (req, res) =>{
     try{
         let {id} = req.params;
@@ -56,11 +62,14 @@ const updateImage = async (req, res) =>{
 
 const deleteImage = async(req, res) => {
   try{
-   let {imageId, id = +imageId} = req.params;
+   let {imageId, id = +imageId,}= req.params;
+   let {pageId , idPage = +pageId} = req.query;
    let image = await images.findByPk(id);
    //retriving all pages that contains the image
    let pages = await image.getPages();
    if(pages.length > 1) return responseHandler.makeResponseError(res, 401, 'image already in use');
+   let belongsToPage = checkBelongsTo(pages,idPage);
+   if(!belongsToPage) return responseHandler.makeResponseError(res, 401, 'wrong manipulation');
    await image.destroy(); // deletes the image
    return responseHandler.makeResponseData(res, 200, 'image deleted');
   }catch(err){
