@@ -47,14 +47,14 @@ npm run dev
 
 For client side app you will need Angular and npm Package manager
 
-1. ```sh
+1.  
    cd <project_name>
    cd frontApp
    npm install
-   ```
-   2. ```sh
-   ng s
-   ```
+   
+2.
+ng s //to run project
+
 
 <!-- USAGE EXAMPLES -->
 
