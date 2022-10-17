@@ -49,11 +49,14 @@ For client side app you will need Angular and npm Package manager
 
 1.  
    cd <project_name>
+   
    cd frontApp
+   
    npm install
    
 2.
-ng s //to run project
+
+   ng s //to run project
 
 
 <!-- USAGE EXAMPLES -->
