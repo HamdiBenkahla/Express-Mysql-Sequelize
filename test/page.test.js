@@ -14,7 +14,7 @@ describe('Page Management', () => {
 
     it('Get page', async () => {
        try {
-            let id = '1'
+            let id = '2'
             let pageUrl = {
                 url: baseUrl + `page/${id}`,
                 method: 'GET',
@@ -29,11 +29,11 @@ describe('Page Management', () => {
             expect(result).to.have.property('data')
             expect(result.message).to.equal('success')
         } catch (error) {
-            error = error.response.data
+            error = error.response?.data
             expect(error.code).to.be.within(400, 500)
             expect(error).to.have.property('error')
             expect(error.error).to.satisfy((err) => {
-                return err === 'token required'
+                return err === 'servor error'
             })
         }
     })

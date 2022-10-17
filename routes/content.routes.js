@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {uploadImage,upload,updateImage,deleteImage,createContent,updateContent} = require('../controller/content');
+const {uploadImage,upload,updateImage,deleteImage,createContent,updateContent,getImage} = require('../controller/content');
 
 
 
@@ -102,6 +102,29 @@ router.put('/upload/:id',upload,updateImage);
  */
 router.delete('/image/:imageId',deleteImage);
 
+
+/**
+ * @swagger
+ * /content/image/{imageId}:
+ *   get:
+ *     tags:
+ *     - "content"
+ *     summary: get an image from db.
+ *     description: allow user to fetch an image from 
+ *     parameters:
+ *       - name: imageId
+ *         description: the id of image.
+ *         required: true
+ *         in: path
+ *     responses:
+ *       "200":
+ *          description: deleted successfully, {"code":"status code","message":"image deleted',data}
+ *       "404":
+ *          description: error:<br> no image found <br>,
+ *       "500":
+ *          description: error:<br> server error
+ */
+ router.get('/image/:imageId',getImage);
 
 /**
  * @swagger

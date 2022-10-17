@@ -1,0 +1,5 @@
+the things i wanted to work on and improve in this test :
+-add a JSON validator package for Node.js like ajv https://github.com/ajv-validator/ajv
+-implent a page owner auth flow that allows only the owner to delete a page or image passing through a jwt access token
+-add more QA tests
+-the use of more abstraction that i couldn't implement enough for a lack of time

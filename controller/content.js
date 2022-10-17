@@ -2,7 +2,7 @@ const { contents, images, pages } = require("../db/db.js");
 const { responseHandler } = require("../helpers/response-handler");
 const multer = require("multer");
 const path = require("path");
-const fs = require('fs');
+const fs = require("fs");
 //! Use of Multer
 var storage = multer.diskStorage({
   destination: (req, file, callBack) => {
@@ -20,6 +20,8 @@ const upload = multer({
   storage: storage,
 }).single("file");
 
+
+
 const handlePathImage = (file, res) => {
   if (!file)
     return responseHandler.makeResponseError(res, 406, {
@@ -27,6 +29,9 @@ const handlePathImage = (file, res) => {
     });
   return process.env.BASEURLLOCAL + "/images/" + file.filename;
 };
+
+
+
 //controller to upload file to db
 const uploadImage = async (req, res) => {
   try {
@@ -44,15 +49,33 @@ const uploadImage = async (req, res) => {
   }
 };
 
+
+
 //check if image belong to page
 let checkBelongsTo = (pages, target) =>
   pages?.map((elem) => elem?.toJSON()?.PageImage?.PageId).includes(target);
 
+
+  const removeImage =image => {
+    let fileName = image?.path.split("/").pop();
+    let directoryPath = __basedir + "/public/images/";
+    fs.unlink(directoryPath + fileName, (_) => {}); //delete uploaded image from /public/images folder
+  }
+
+  
 const updateImage = async (req, res) => {
   try {
-    let { id } = req.params;
-    const path = handlePathImage(req?.file, res);
+    let  id = +req.params;
     let image = await images.findByPk(id);
+     if(!image){
+      return responseHandler.makeResponseError(
+        res,
+        404,
+        'image not found'
+      );
+     }
+     const path = handlePathImage(req?.file, res);
+    removeImage(image) // delete old image from /public/images folder
     image.path = path;
     await image.save();
     return responseHandler.makeResponseData(res, 200, "image updated");
@@ -84,11 +107,9 @@ const deleteImage = async (req, res) => {
     let belongsToPage = checkBelongsTo(pages, idPage);
     if (!belongsToPage)
       return responseHandler.makeResponseError(res, 401, "wrong manipulation");
-    
+
     await image.destroy(); // deletes the image from db
-    let fileName =image.path.split('/').pop()
-    let directoryPath = __basedir +"/public/images/";
-    fs.unlink(directoryPath + fileName,_ =>{}); //delete uploaded image from /public/images folder
+    removeImage(image)  //delete uploaded image from /public/images folder
     responseHandler.makeResponseData(res, 200, "image deleted");
   } catch (err) {
     return responseHandler.makeResponseError(
@@ -139,6 +160,27 @@ const updateContent = async (req, res) => {
   }
 };
 
+const getImage = async (req, res) => {
+  try{
+   const imageId = +req.params.imageId;
+   let image = await images.findByPk(imageId);
+   if(!image){
+    return responseHandler.makeResponseError(
+      res,
+      404,
+      'image not found'
+    );
+   }
+   return responseHandler.makeResponseData(res, 200, "success", image);
+  }catch(err){
+    return responseHandler.makeResponseError(
+      res,
+      500,
+      err.message ? err.message : err.error
+    );
+  }
+}
+
 module.exports = {
   uploadImage,
   upload,
@@ -146,4 +188,5 @@ module.exports = {
   deleteImage,
   createContent,
   updateContent,
+  getImage
 };
